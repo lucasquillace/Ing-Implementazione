@@ -1,8 +1,9 @@
 package luca.ingimplementazione.flyweight;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 
 //interfaccia flyweight
 public interface LogicGate {
-    public void draw(double x, double y);
+    public void draw(Pane pane, double x, double y);
 }

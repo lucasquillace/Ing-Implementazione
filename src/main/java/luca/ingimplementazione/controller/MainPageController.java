@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -14,8 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import luca.ingimplementazione.flyweight.LogicGate;
 import luca.ingimplementazione.flyweight.LogicGateFactory;
-
-import java.util.ArrayList;
 
 public class MainPageController {
 
@@ -61,37 +60,12 @@ public class MainPageController {
     @FXML
     private AnchorPane xorPane;
 
-    @FXML
-    void onAddAnd(MouseEvent event) {
-        addGate("AND");
-    }
+    //per gestire quando l'utente vuole spostare un qualcosa
+    Line selectedLine = null;
+    ImageView selectedGateImageView =null;
 
-    @FXML
-    void onAddNand(MouseEvent event) {
-        addGate("NAND");
-    }
-
-    @FXML
-    void onAddNor(MouseEvent event) {
-        addGate("NOR");
-    }
-
-    @FXML
-    void onAddNot(MouseEvent event) {
-        addGate("NOT");
-    }
-
-    @FXML
-    void onAddOr(MouseEvent event) {
-        addGate("OR");
-    }
-
-    @FXML
-    void onAddXor(MouseEvent event) {
-        addGate("XOR");
-    }
-
-    Line selectedLine = new Line();
+    //per capire quando bisogna aggiungere spazio
+    ImageView newImage = null;
 
     private static final int HEIGHT = 100;
     private static final int WIDTH = 160;
@@ -100,30 +74,70 @@ public class MainPageController {
     public void initialize() {
 
         //altrimenti si rompe per la scrollbar
-        mainScrollPane.setFitToHeight(true);
-        mainScrollPane.setFitToWidth(true);
+        mainScrollPane.setFocusTraversable(true);
+        mainScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        mainScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
 
         //per bindare le immagini al proprio pane
         this.bindImages();
+
+        //per il drag and drop
         this.dragAndDropSource(notPane, notGateImageView, "NOT");
+        this.dragAndDropSource(andPane, andGateImageView, "AND");
+        this.dragAndDropSource(nandPane, nandGateImageView, "NAND");
+        this.dragAndDropSource(norPane, norGateImageView, "NOR");
+        this.dragAndDropSource(orPane, orGateImageView, "OR");
+        this.dragAndDropSource(xorPane, xorGateImageView, "XOR");
+
         this.dragAndDropDestination();
 
         //setup per le linee
         mainPane.setOnMousePressed(event -> {
             System.out.println("Evento catturato" + event.getButton() + " " + event.getTarget());
 
+            mainScrollPane.setPannable(true);
             //se si sta cliccando una linea
             if (event.getTarget() instanceof Line && selectedLine == null) {
                 selectedLine = (Line) event.getTarget();
                 selectedLine.setStroke(Color.RED);
+                if (selectedGateImageView != null) {
+                    selectedGateImageView.setEffect(null);
+                    selectedGateImageView = null;
+                }
                 return;
             }
+
+            //se si sta cliccando un'immagine
+            if (event.getTarget() instanceof ImageView && selectedGateImageView == null) {
+                selectedGateImageView = (ImageView) event.getTarget();
+
+                //per colorare la porta
+                ColorInput red = new ColorInput(
+                        0, 0,
+                        selectedGateImageView.getImage().getWidth(),
+                        selectedGateImageView.getImage().getHeight(),
+                        Color.RED
+                );
+
+                Blend blend = new Blend(BlendMode.SRC_ATOP);
+                blend.setTopInput(red);
+                selectedGateImageView.setEffect(blend);
+
+                if (selectedLine != null) {
+                    selectedLine.setStroke(Color.BLACK);
+                    selectedLine = null;
+                }
+                return;
+            }
+
 
             //se premo con il tasto destro cancello la linea
             if (event.getTarget() instanceof Line && selectedLine != null && event.getButton() == MouseButton.SECONDARY) {
 
                 //se clicco 2 volte sulla stessa linea la cancello
                 if (event.getTarget().equals(selectedLine)) {
+                    mainScrollPane.setPannable(false);
                     mainPane.getChildren().remove(selectedLine);
                     selectedLine.setStroke(Color.BLACK);
                     selectedLine = null;
@@ -131,13 +145,25 @@ public class MainPageController {
 
             }
 
+            //se premo con il tasto destro, cancello un'immagine
+            if (event.getTarget() instanceof ImageView && selectedGateImageView != null && event.getButton() == MouseButton.SECONDARY) {
+                if (event.getTarget().equals(selectedGateImageView)) {
+                    mainScrollPane.setPannable(false);
+                    mainPane.getChildren().remove(selectedGateImageView);
+                    selectedGateImageView.setEffect(null);
+                    selectedGateImageView = null;
+
+                }
+            }
+
             //se clicco con il mouse sinistro, creo una nuova linea
-            if (event.getButton() == MouseButton.PRIMARY) {
+            if (event.getButton() == MouseButton.PRIMARY && event.getTarget() instanceof Pane) {
                 Line line = new Line(event.getX() , event.getY() , event.getX()+50 , event.getY()-20);
                 line.setStrokeWidth(3);
 
                 line.setOnMouseDragged(e-> {
                     if (selectedLine == e.getTarget()) {
+                        mainScrollPane.setPannable(false);
                         line.setEndX(e.getX());
                         line.setEndY(e.getY());
                     }
@@ -149,8 +175,14 @@ public class MainPageController {
 
         mainPane.setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.PRIMARY && selectedLine != null) {
+                mainScrollPane.setPannable(false);
                 selectedLine.setEndX(event.getX());
                 selectedLine.setEndY(event.getY());
+            }
+            if (event.getButton() == MouseButton.PRIMARY && selectedGateImageView != null) {
+                mainScrollPane.setPannable(false);
+                selectedGateImageView.setX(event.getX() - selectedGateImageView.getFitWidth() / 2);
+                selectedGateImageView.setY(event.getY() - selectedGateImageView.getFitHeight() / 2);
             }
 
         });
@@ -160,14 +192,14 @@ public class MainPageController {
                 selectedLine.setStroke(Color.BLACK);
                 selectedLine = null;
             }
+
+            if (event.getButton() == MouseButton.PRIMARY && selectedGateImageView != null) {
+                selectedGateImageView.setEffect(null);
+                selectedGateImageView = null;
+            }
         });
     }
 
-    //aggiunge il gate alla tela
-    private void addGate(String type){
-        //LogicGate logicGate = LogicGateFactory.getGate(type);
-
-    }
 
     private void bindImages() {
         Platform.runLater(() -> {
@@ -238,7 +270,7 @@ public class MainPageController {
     //crea il gate di tipo type in posizione x y
     private void createNewGate(String type, double x, double y) {
         LogicGate logicGate = LogicGateFactory.getGate(type);
-        logicGate.draw(x,y);
+        logicGate.draw(mainPane, x,y);
 
     }
 }
