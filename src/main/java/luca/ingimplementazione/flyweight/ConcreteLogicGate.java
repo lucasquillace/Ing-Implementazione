@@ -9,8 +9,8 @@ public class ConcreteLogicGate implements LogicGate {
     private String type;
     private Image image;
 
-    private final static float WIDTH = 80;
-    private final static float HEIGHT = 60;
+    private final static float WIDTH = 160;
+    private final static float HEIGHT = 100;
 
 
     public ConcreteLogicGate(String type, String imagePath) {
@@ -23,10 +23,11 @@ public class ConcreteLogicGate implements LogicGate {
     }
 
     @Override
-    public void draw(GraphicsContext gc, double x, double y, double zoomLevel) {
-        double width = zoomLevel * WIDTH;
-        double height = zoomLevel * HEIGHT;
+    public void draw(double x, double y) {
 
-        gc.drawImage(image, x, y, width, height);
+    }
+
+    public Image getImage() {
+        return image;
     }
 }

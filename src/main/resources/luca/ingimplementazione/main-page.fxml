@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="luca.ingimplementazione.controller.MainPageController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ScrollPane fx:id="mainScrollPane" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <content>
+                  <Pane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </ScrollPane>
+
+            <HBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="1080.0" spacing="15.0" style="-fx-background-color: #e0e0e0; -fx-padding: 10;" VBox.vgrow="NEVER">
+               <children>
+                  <AnchorPane fx:id="notPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddNot" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="notGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@images/NOT_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="andPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddAnd" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="andGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@images/AND_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="orPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddOr" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="orGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@images/OR_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddXor" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS" fx:id="xorPane">
+                     <children>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xorGateImageView">
+                           <image>
+                              <Image url="@images/XOR_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="nandPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddNand" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="nandGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@images/NAND_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="norPane" minHeight="0.0" minWidth="0.0" onMouseClicked="#onAddNor" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="norGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@images/NOR_GATE.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
