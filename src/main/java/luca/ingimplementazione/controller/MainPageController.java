@@ -29,10 +29,6 @@ import java.net.URL;
 
 public class MainPageController {
 
-
-    @FXML
-    private ImageView menuButton;
-
     @FXML
     private VBox lateralPanel;
 
@@ -85,14 +81,8 @@ public class MainPageController {
     Line selectedLine = null;
     ImageView selectedGateImageView = null;
 
-    //per capire quando bisogna aggiungere spazio
-    ImageView newImage = null;
-
     //per capire quando aprire e chiudere il menù laterale
     private boolean isMenuOpen = false;
-
-    private static final int HEIGHT = 100;
-    private static final int WIDTH = 160;
 
     //stile css
     private static final String NORMAL_GATE=" -fx-background-color: transparent; -fx-background-radius: 5px;";
@@ -101,27 +91,6 @@ public class MainPageController {
             "    -fx-border-color: #2196f3;" +
             "    -fx-border-radius: 5px;" +
             "    -fx-border-width: 1px;";
-
-    private static final String TITLE_LABEL = """
-            -fx-font-family: "Segoe UI", sans-serif;
-                -fx-font-size: 24px;
-                -fx-font-weight: bold;
-                -fx-text-fill: #ffffff;
-                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1);
-           """;
-    private static final String SUBTITLE_LABEL = """
-            -fx-font-family: "Segoe UI", sans-serif;
-                -fx-font-size: 16px;
-                -fx-font-weight: normal;
-                -fx-text-fill: #aaaaaa;
-                -fx-padding: 0 0 10 0;
-            """;
-    private static final String BODY_LABEL = """
-            -fx-font-family: "Segoe UI", sans-serif;
-                -fx-font-size: 14px;
-                -fx-text-fill: #e0e0e0; 
-                -fx-line-spacing: 4px; 
-            """;
 
     @FXML
     public void initialize() {

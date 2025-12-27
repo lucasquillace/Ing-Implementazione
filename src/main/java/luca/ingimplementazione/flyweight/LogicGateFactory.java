@@ -20,7 +20,7 @@ public class LogicGateFactory {
                 case "NOR" -> concreteLogicGate = new ConcreteLogicGate(gateType , IMAGEPATH+"NOR_GATE.png" );
                 case "NAND" -> concreteLogicGate = new ConcreteLogicGate(gateType , IMAGEPATH+"NAND_GATE.png" );
                 case "XOR" -> concreteLogicGate = new ConcreteLogicGate(gateType , IMAGEPATH+"XOR_GATE.png");
-                default -> concreteLogicGate = new ConcreteLogicGate("Impossibile visualizzare" , "path");
+                default -> concreteLogicGate = new ConcreteLogicGate("Impossibile visualizzare" , "");
             }
             flyweights.put(gateType, concreteLogicGate);
             return concreteLogicGate;

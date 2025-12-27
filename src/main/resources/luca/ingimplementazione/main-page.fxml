@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="luca.ingimplementazione.controller.MainPageController">
+<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="luca.ingimplementazione.controller.MainPageController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,9 +20,9 @@
                </content>
             </ScrollPane>
 
-            <HBox alignment="CENTER_LEFT" maxHeight="100.0" maxWidth="1080.0" prefHeight="100.0" prefWidth="1080.0" spacing="15.0" style="-fx-background-color: #e0e0e0; -fx-padding: 10;" VBox.vgrow="NEVER">
+            <HBox alignment="CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="180.0" prefWidth="1080.0" spacing="15.0" style="-fx-background-color: #e0e0e0; -fx-padding: 10;" VBox.vgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="notPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="notPane" maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="notGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <image>
@@ -30,7 +30,7 @@
                            </image></ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="andPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="andPane" maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="andGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <image>
@@ -38,7 +38,7 @@
                            </image></ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="orPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="orPane" maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="orGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <image>
@@ -46,7 +46,7 @@
                            </image></ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS" fx:id="xorPane">
+                  <AnchorPane maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS" fx:id="xorPane">
                      <children>
                         <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xorGateImageView">
                            <image>
@@ -54,7 +54,7 @@
                            </image></ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="nandPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="nandPane" maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="nandGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <image>
@@ -62,7 +62,7 @@
                            </image></ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="norPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="norPane" maxHeight="250.0" maxWidth="250.0" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="norGateImageView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <image>
@@ -74,7 +74,7 @@
             </HBox>
          </children>
       </VBox>
-      <ImageView fx:id="menuButton" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#toggleMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#toggleMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
          <image>
             <Image url="@images/menuicon.png" />
          </image>
