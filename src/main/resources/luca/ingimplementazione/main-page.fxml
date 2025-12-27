@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="luca.ingimplementazione.controller.MainPageController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="luca.ingimplementazione.controller.MainPageController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -70,8 +72,30 @@
                   </AnchorPane>
                </children>
             </HBox>
-
          </children>
       </VBox>
+      <ImageView fx:id="menuButton" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#toggleMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <image>
+            <Image url="@images/menuicon.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+
+      <AnchorPane fx:id="overlay" style="-fx-background-color: rgba(0,0,0,0.3);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+
+      <VBox fx:id="lateralPanel" prefHeight="720.0" prefWidth="250.0" spacing="15.0" style="-fx-background-color: #333333;" translateX="-250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label styleClass="lbl-title" text="INFO" textFill="#fc0000" />
+            <Label styleClass="lbl-subtitle" text="Posizionare le porte logiche e le linee" textFill="RED" wrapText="true" />
+            <Label styleClass="lbl-body" text="Per posizionare una porta logica, basta trascinarla nella zona di disegno. Per aggiungere i collegamenti, basta cliccare con il tasto sinistro in una parte vuota della zona di disegno" textFill="RED" wrapText="true" />
+            <Label styleClass="lbl-subtitle" text="Eliminare le porte logiche e le linee" textFill="RED" wrapText="true" />
+            <Label styleClass="lbl-body" text="Per eliminare le porte logiche o le linee, basta cliccarci sopra con il tasto destro. Per confermare la propria scelta, occorrerà cliccarci nuovamente con il tasto destro" textFill="RED" wrapText="true" />
+            <Label styleClass="lbl-subtitle" text="Modificare le porte logiche e le linee" wrapText="true" />
+            <Label styleClass="lbl-body" text="Per modificare la posizione delle porte logiche basterà trascinarle premendo il tasto sinistro. Stessa cosa per le linee, si potrà cambiare il punto finale." wrapText="true" />
+         </children>
+      </VBox>
+
    </children>
 </AnchorPane>

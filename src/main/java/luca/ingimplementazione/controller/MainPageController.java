@@ -1,8 +1,14 @@
 package luca.ingimplementazione.controller;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
@@ -10,13 +16,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import luca.ingimplementazione.flyweight.LogicGate;
 import luca.ingimplementazione.flyweight.LogicGateFactory;
 
+import java.net.URL;
+
 public class MainPageController {
+
+
+    @FXML
+    private ImageView menuButton;
+
+    @FXML
+    private VBox lateralPanel;
+
+    @FXML
+    private AnchorPane overlay;
 
     @FXML
     private ImageView andGateImageView;
@@ -62,17 +83,51 @@ public class MainPageController {
 
     //per gestire quando l'utente vuole spostare un qualcosa
     Line selectedLine = null;
-    ImageView selectedGateImageView =null;
+    ImageView selectedGateImageView = null;
 
     //per capire quando bisogna aggiungere spazio
     ImageView newImage = null;
 
+    //per capire quando aprire e chiudere il menù laterale
+    private boolean isMenuOpen = false;
+
     private static final int HEIGHT = 100;
     private static final int WIDTH = 160;
+
+    //stile css
+    private static final String NORMAL_GATE=" -fx-background-color: transparent; -fx-background-radius: 5px;";
+    private static final String HOVER_GATE = "-fx-background-color: rgba(33, 150, 243, 0.2);" +
+            "    -fx-background-radius: 5px;" +
+            "    -fx-border-color: #2196f3;" +
+            "    -fx-border-radius: 5px;" +
+            "    -fx-border-width: 1px;";
+
+    private static final String TITLE_LABEL = """
+            -fx-font-family: "Segoe UI", sans-serif;
+                -fx-font-size: 24px;
+                -fx-font-weight: bold;
+                -fx-text-fill: #ffffff;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1);
+           """;
+    private static final String SUBTITLE_LABEL = """
+            -fx-font-family: "Segoe UI", sans-serif;
+                -fx-font-size: 16px;
+                -fx-font-weight: normal;
+                -fx-text-fill: #aaaaaa;
+                -fx-padding: 0 0 10 0;
+            """;
+    private static final String BODY_LABEL = """
+            -fx-font-family: "Segoe UI", sans-serif;
+                -fx-font-size: 14px;
+                -fx-text-fill: #e0e0e0; 
+                -fx-line-spacing: 4px; 
+            """;
 
     @FXML
     public void initialize() {
 
+        overlay.setVisible(false);
+        overlay.setOnMouseClicked(event -> toggleMenu());
         //altrimenti si rompe per la scrollbar
         mainScrollPane.setFocusTraversable(true);
         mainScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -108,7 +163,7 @@ public class MainPageController {
                 return;
             }
 
-            //se si sta cliccando un'immagine
+            //se si sta cliccando un'immagine. Non funziona a volte
             if (event.getTarget() instanceof ImageView && selectedGateImageView == null) {
                 selectedGateImageView = (ImageView) event.getTarget();
 
@@ -158,10 +213,10 @@ public class MainPageController {
 
             //se clicco con il mouse sinistro, creo una nuova linea
             if (event.getButton() == MouseButton.PRIMARY && event.getTarget() instanceof Pane) {
-                Line line = new Line(event.getX() , event.getY() , event.getX()+50 , event.getY()-20);
+                Line line = new Line(event.getX(), event.getY(), event.getX() + 50, event.getY());
                 line.setStrokeWidth(3);
 
-                line.setOnMouseDragged(e-> {
+                line.setOnMouseDragged(e -> {
                     if (selectedLine == e.getTarget()) {
                         mainScrollPane.setPannable(false);
                         line.setEndX(e.getX());
@@ -188,6 +243,7 @@ public class MainPageController {
         });
 
         mainPane.setOnMouseReleased(event -> {
+            this.expandPaneIfNeeded(event.getX(), event.getY());
             if (event.getButton() == MouseButton.PRIMARY && selectedLine != null) {
                 selectedLine.setStroke(Color.BLACK);
                 selectedLine = null;
@@ -198,6 +254,9 @@ public class MainPageController {
                 selectedGateImageView = null;
             }
         });
+
+        //per applicare lo stile
+        this.applyStyle();
     }
 
 
@@ -248,7 +307,7 @@ public class MainPageController {
         });
     }
 
-    private void dragAndDropDestination(){
+    private void dragAndDropDestination() {
         mainPane.setOnDragOver(event -> {
             if (event.getGestureSource() != mainPane && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.COPY);
@@ -261,6 +320,7 @@ public class MainPageController {
             if (dragboard.hasString()) {
                 String gateType = dragboard.getString();
                 this.createNewGate(gateType, event.getX(), event.getY());
+                this.expandPaneIfNeeded(event.getX(), event.getY());
             }
             event.setDropCompleted(true);
             event.consume();
@@ -270,7 +330,63 @@ public class MainPageController {
     //crea il gate di tipo type in posizione x y
     private void createNewGate(String type, double x, double y) {
         LogicGate logicGate = LogicGateFactory.getGate(type);
-        logicGate.draw(mainPane, x,y);
+        logicGate.draw(mainPane, x, y);
 
+    }
+
+    //ingrandisce il pannello opportunamente
+    private void expandPaneIfNeeded(double eventX, double eventY) {
+        if ((eventX + 200 >= mainPane.getWidth() || eventY + 200 >= mainPane.getHeight())) {
+            double width = mainPane.getWidth();
+            double height = mainPane.getHeight();
+
+            mainPane.setMinWidth(width + 500);
+            mainPane.setMinHeight(height + 500);
+            mainPane.setPrefWidth(width + 500);
+            mainPane.setPrefHeight(height + 500);
+        }
+    }
+
+
+    //aprire e chiudere il menù
+    public void toggleMenu() {
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(lateralPanel);
+
+        if (isMenuOpen) {
+            transition.setToX(-250);
+            transition.setOnFinished(e -> overlay.setVisible(false));
+            isMenuOpen = false;
+        } else {
+            overlay.setVisible(true);
+            transition.setToX(0);
+            isMenuOpen = true;
+        }
+
+        transition.play();
+    }
+
+    private void applyStyle(){
+        lateralPanel.getStylesheets().add(getClass().getResource("/luca/ingimplementazione/styles.css").toExternalForm());
+
+        applyHoverStyle(notPane);
+        applyHoverStyle(andPane);
+        applyHoverStyle(orPane);
+        applyHoverStyle(nandPane);
+        applyHoverStyle(norPane);
+        applyHoverStyle(xorPane);
+
+    }
+
+    private void applyHoverStyle(Pane pane){
+        pane.setCursor(Cursor.OPEN_HAND);
+        pane.setOnMouseEntered(e ->{
+            pane.setStyle(HOVER_GATE);
+        });
+
+        pane.setOnMouseExited(e -> {
+            pane.setStyle(NORMAL_GATE);
+        });
     }
 }

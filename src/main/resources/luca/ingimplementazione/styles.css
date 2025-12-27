@@ -1,0 +1,25 @@
+/* TITOLO PRINCIPALE: Grande, Bianco, Grassetto */
+.lbl-title {
+    -fx-font-family: "Segoe UI", sans-serif; /* Font moderno di sistema */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* Bianco puro */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1); /* Ombra leggera per staccare */
+}
+
+/* SOTTOTITOLO: Grigio, Leggermente più piccolo, magari tutto maiuscolo */
+.lbl-subtitle {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #aaaaaa; /* Grigio medio */
+    -fx-padding: 0 0 10 0; /* Un po' di spazio sotto */
+}
+
+/* TESTO CORPO: Leggibile, Grigio Chiaro (non bianco sparato) */
+.lbl-body {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0; /* Bianco sporco, riposante per gli occhi */
+    -fx-line-spacing: 4px; /* Aumenta leggibilità */
+}
