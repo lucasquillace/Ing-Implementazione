@@ -141,7 +141,7 @@ public class MainPageController {
                 return;
             }
 
-            //se si sta cliccando un'immagine. Non funziona a volte
+            //se si sta cliccando un'immagine.
             if (event.getTarget() instanceof ImageView && selectedGateImageView == null) {
                 selectedGateImageView = (ImageView) event.getTarget();
 
