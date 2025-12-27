@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 import luca.ingimplementazione.flyweight.LogicGate;
 import luca.ingimplementazione.flyweight.LogicGateFactory;
@@ -84,6 +85,13 @@ public class MainPageController {
     //per capire quando aprire e chiudere il menù laterale
     private boolean isMenuOpen = false;
 
+    //per gestire lo zoom
+    private double currentZoom = 1.0;
+    private static final double MIN_ZOOM = 0.25;
+    private static final double MAX_ZOOM = 3.0;
+    private static final double ZOOM_STEP = 0.1;
+    private Scale scaleTransform;
+
     //stile css
     private static final String NORMAL_GATE=" -fx-background-color: transparent; -fx-background-radius: 5px;";
     private static final String HOVER_GATE = "-fx-background-color: rgba(33, 150, 243, 0.2);" +
@@ -102,6 +110,8 @@ public class MainPageController {
         mainScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         mainScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
+        //setup zoom
+        setupZoom();
 
         //per bindare le immagini al proprio pane
         this.bindImages();
@@ -118,7 +128,6 @@ public class MainPageController {
 
         //setup per le linee
         mainPane.setOnMousePressed(event -> {
-            System.out.println("Evento catturato" + event.getButton() + " " + event.getTarget());
 
             mainScrollPane.setPannable(true);
             //se si sta cliccando una linea
@@ -228,6 +237,73 @@ public class MainPageController {
         this.applyStyle();
     }
 
+    private void setupZoom() {
+        scaleTransform = new Scale(1, 1, 0, 0);
+        mainPane.getTransforms().add(scaleTransform);
+
+        //per muoversi con lo scroll
+        mainScrollPane.setOnScroll(event -> {
+            if (event.isControlDown()) {
+                event.consume();
+
+                double deltaY = event.getDeltaY();
+                if (deltaY > 0) {
+                    setZoom(currentZoom + ZOOM_STEP);
+                } else if (deltaY < 0) {
+                    setZoom(currentZoom - ZOOM_STEP);
+                }
+            }
+        });
+
+        //per muoversi con ctrl + / ctrl -
+        mainScrollPane.setOnKeyPressed(event -> {
+            if (event.isControlDown()) {
+                if (event.getCode() == KeyCode.PLUS || event.getCode() == KeyCode.EQUALS || event.getCode() == KeyCode.ADD) {
+                    event.consume();
+                    setZoom(currentZoom + ZOOM_STEP);
+                } else if (event.getCode() == KeyCode.MINUS || event.getCode() == KeyCode.SUBTRACT) {
+                    event.consume();
+                    setZoom(currentZoom - ZOOM_STEP);
+                } else if (event.getCode() == KeyCode.DIGIT0 || event.getCode() == KeyCode.NUMPAD0) {
+                    event.consume();
+                    setZoom(1.0);
+                }
+            }
+        });
+    }
+
+    private void setZoom(double zoom) {
+
+        //per limitare lo zoom
+        zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom));
+
+        if (zoom != currentZoom) {
+
+            //salvo la posizione dello scroll dello scrollPane
+            double hValue = mainScrollPane.getHvalue();
+            double vValue = mainScrollPane.getVvalue();
+
+            currentZoom = zoom;
+            scaleTransform.setX(currentZoom);
+            scaleTransform.setY(currentZoom);
+
+            //per gesstire le dimensioni del pannello in base allo zoom
+            double baseWidth = Math.max(2000, mainPane.getWidth() / (currentZoom == 1.0 ? 1.0 : (currentZoom / 1.0)));
+            double baseHeight = Math.max(2000, mainPane.getHeight() / (currentZoom == 1.0 ? 1.0 : (currentZoom / 1.0)));
+
+            mainPane.setMinWidth(baseWidth * currentZoom);
+            mainPane.setMinHeight(baseHeight * currentZoom);
+            mainPane.setPrefWidth(baseWidth * currentZoom);
+            mainPane.setPrefHeight(baseHeight * currentZoom);
+
+            //per mettere lo scroll dovera prima
+            Platform.runLater(() -> {
+                mainScrollPane.setHvalue(hValue);
+                mainScrollPane.setVvalue(vValue);
+            });
+
+        }
+    }
 
     private void bindImages() {
         Platform.runLater(() -> {
@@ -305,14 +381,14 @@ public class MainPageController {
 
     //ingrandisce il pannello opportunamente
     private void expandPaneIfNeeded(double eventX, double eventY) {
-        if ((eventX + 200 >= mainPane.getWidth() || eventY + 200 >= mainPane.getHeight())) {
+        if ((eventX + 200 >= mainPane.getWidth() / currentZoom || eventY + 200 >= mainPane.getHeight() / currentZoom)) {
             double width = mainPane.getWidth();
             double height = mainPane.getHeight();
 
-            mainPane.setMinWidth(width + 500);
-            mainPane.setMinHeight(height + 500);
-            mainPane.setPrefWidth(width + 500);
-            mainPane.setPrefHeight(height + 500);
+            mainPane.setMinWidth(width + 500 * currentZoom);
+            mainPane.setMinHeight(height + 500 * currentZoom);
+            mainPane.setPrefWidth(width + 500 * currentZoom);
+            mainPane.setPrefHeight(height + 500 * currentZoom);
         }
     }
 

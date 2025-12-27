@@ -16,3 +16,4 @@ In questo modo, anche in uno scenario con moltissime porte logiche, la memoria g
 - L'inserimento delle porte è tramite Drag & Drop. (Il trascinamento memorizza solo una stringa, poi delega alla Factory la creazione della porta vera e propria sulla tela)
 - È possibile navigare su una tela infinita. (Il pannello si ingrandisce quando necessario)
 - È possibile inserire dei collegamenti tra le porte, simulando dei fili elettrici
+- È integrato un sistema di zoom: si può ingrandire il piano (con CTRL +) e rimpicciolirlo (con CTRL -), oppure farlo ritornare allo zoom iniziale (CTRL 0) 
